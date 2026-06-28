@@ -14,7 +14,7 @@ export const projects: Project[] = [
     description:
       "Web3 accounting SaaS. On-chain wallet ownership proof and auditable movement reports with CSV and PDF export.",
     tech: ["Next.js", "TypeScript", "Drizzle", "viem / wagmi"],
-    href: "https://github.com/martinfantinelli/proventa",
+    href: "https://proventa-bay.vercel.app",
     live: "https://proventa-bay.vercel.app",
   },
   {
