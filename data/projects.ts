@@ -21,8 +21,17 @@ export const projects: Project[] = [
     name: "iFood Product Crawler",
     description:
       "Crawler for iFood product data. Pluggable fetcher, retry/backoff, checkpointing, tested.",
-    tech: ["Node.js", "JavaScript"],
+    tech: ["JavaScript"],
     href: "https://github.com/martinfantinelli/ifood-product-crawler",
+  },
+  {
+    name: "Indicativa",
+    description:
+      "Evaluation and ranking platform for associations and their products. Patients create accounts, rate associations, and help others make safe choices.",
+ 
+    tech: ["Node.js", "TypeScript", "PostgreSQL", "Next.js", "Tailwind CSS", "React"],
+    href: "https://indicativa.app/",
+    live: "https://indicativa.app/",
   },
   {
     name: "Nutallo",
