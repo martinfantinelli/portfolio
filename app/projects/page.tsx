@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { projects } from "@/data/projects";
+import ProjectsList from "@/components/ProjectsList";
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -22,48 +22,9 @@ export default function ProjectsPage() {
         </span>
       </header>
 
-      <ul className="mt-16 flex-1 md:mt-24">
-        {projects.map((p) => (
-          <li
-            key={p.name}
-            className="border-t border-hairline py-8 last:border-b"
-          >
-            <div className="flex flex-col gap-3 md:flex-row md:items-baseline md:justify-between md:gap-8">
-              <div className="md:max-w-md">
-                <h2 className="text-lg font-semibold tracking-[-0.01em] text-foreground">
-                  {p.name}
-                </h2>
-                <p className="mt-1 text-sm leading-relaxed text-secondary">
-                  {p.description}
-                </p>
-                <p className="mt-3 text-[11px] font-medium uppercase tracking-label text-primary">
-                  {p.tech.join(" · ")}
-                </p>
-              </div>
-              <div className="flex shrink-0 gap-4 text-[11px] font-medium uppercase tracking-label">
-                {p.live && (
-                  <a
-                    href={p.live}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-secondary transition-colors duration-200 hover:text-foreground"
-                  >
-                    Live
-                  </a>
-                )}
-                <a
-                  href={p.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-secondary transition-colors duration-200 hover:text-foreground"
-                >
-                  Code
-                </a>
-              </div>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <div className="mt-16 flex-1 md:mt-24">
+        <ProjectsList />
+      </div>
 
       <footer className="mt-16 flex justify-between text-[11px] font-medium uppercase tracking-label text-secondary">
         <Link
