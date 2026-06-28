@@ -94,9 +94,10 @@ export default function Sphere() {
       rx += (targetRX - rx) * 0.06;
       ry += (targetRY - ry) * 0.06;
 
-      // abre e fecha (respiração marcada) junto com o giro
-      const breathe = reduced ? 1 : 1 + Math.sin(t * 0.9) * 0.13;
-      const base = Math.min(w, h) * 0.42 * breathe;
+      // abre e fecha (respiração ampla) junto com o giro. amplitude mantida
+      // <1 pra não inverter (breathe negativo) e base reduzida pra não vazar.
+      const breathe = reduced ? 1 : 1 + Math.sin(t * 0.9) * 0.42;
+      const base = Math.min(w, h) * 0.34 * breathe;
       const cx = w / 2;
       const cy = h / 2;
       const scale = Math.min(w, h) / 520;
