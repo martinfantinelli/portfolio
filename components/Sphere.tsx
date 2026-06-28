@@ -94,7 +94,8 @@ export default function Sphere() {
       rx += (targetRX - rx) * 0.06;
       ry += (targetRY - ry) * 0.06;
 
-      const breathe = reduced ? 1 : 1 + Math.sin(t * 0.8) * 0.025;
+      // abre e fecha (respiração marcada) junto com o giro
+      const breathe = reduced ? 1 : 1 + Math.sin(t * 0.9) * 0.13;
       const base = Math.min(w, h) * 0.42 * breathe;
       const cx = w / 2;
       const cy = h / 2;
@@ -111,8 +112,8 @@ export default function Sphere() {
 
       // glow radial atrás da esfera
       const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, base * 1.5);
-      glow.addColorStop(0, "rgba(155, 89, 182, 0.10)");
-      glow.addColorStop(0.5, "rgba(161, 179, 195, 0.05)");
+      glow.addColorStop(0, "rgba(226, 48, 48, 0.12)");
+      glow.addColorStop(0.5, "rgba(217, 119, 87, 0.05)");
       glow.addColorStop(1, "rgba(255, 255, 255, 0)");
       ctx.fillStyle = glow;
       ctx.fillRect(0, 0, w, h);
@@ -141,7 +142,7 @@ export default function Sphere() {
           const dd = (pd[i] + pd[j]) / 2;
           const a = dd * dd * 0.16;
           if (a < 0.012) continue;
-          ctx.strokeStyle = `rgba(161, 179, 195, ${a})`;
+          ctx.strokeStyle = `rgba(200, 80, 80, ${a})`;
           ctx.beginPath();
           ctx.moveTo(px[i], py[i]);
           ctx.lineTo(px[j], py[j]);
@@ -152,9 +153,10 @@ export default function Sphere() {
       // pontos (cor roxo perto -> azul-cinza longe)
       for (let i = 0; i < DOT_COUNT; i++) {
         const depth = pd[i];
-        const r = Math.round(lerp(161, 155, depth));
-        const g = Math.round(lerp(179, 89, depth));
-        const b = Math.round(lerp(195, 182, depth));
+        // vermelho: escuro no fundo da esfera, vivo na frente
+        const r = Math.round(lerp(120, 226, depth));
+        const g = Math.round(lerp(30, 48, depth));
+        const b = Math.round(lerp(30, 48, depth));
         const alpha = 0.16 + depth * depth * 0.84;
         const dot = Math.max((0.5 + depth * 1.8) * scale, 0.4);
         ctx.beginPath();
