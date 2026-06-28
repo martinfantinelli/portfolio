@@ -2,25 +2,41 @@
 
 import { useEffect, useRef } from "react";
 
-// Esfera de pontos roxos (gráfico decorativo central), recriando a estética
-// area.tech: volume 3D por tamanho + opacidade dos pontos, não por gradiente.
-// Pontos distribuídos por Fibonacci sphere, rotação lenta em Y + parallax do mouse.
-const DOT_COUNT = 720;
-const ACCENT = "155, 89, 182"; // #9b59b6
+// Esfera de pontos (gráfico decorativo central). Estética area.tech: volume 3D
+// por tamanho + opacidade dos pontos. Incrementos: cor por profundidade
+// (roxo perto -> azul-cinza longe), linhas de constelação entre vizinhos,
+// glow radial, respiração + rotação multi-eixo. Parallax do mouse.
+const DOT_COUNT = 620;
+const NEIGHBORS = 3;
 
-type P = { x: number; y: number; z: number };
+type P = { x: number; y: number; z: number; nb: number[] };
 
-function fibonacciSphere(n: number): P[] {
+function buildSphere(n: number): P[] {
   const pts: P[] = [];
   const phi = Math.PI * (Math.sqrt(5) - 1); // golden angle
   for (let i = 0; i < n; i++) {
-    const y = 1 - (i / (n - 1)) * 2; // 1 -> -1
+    const y = 1 - (i / (n - 1)) * 2;
     const r = Math.sqrt(1 - y * y);
-    const theta = phi * i;
-    pts.push({ x: Math.cos(theta) * r, y, z: Math.sin(theta) * r });
+    const t = phi * i;
+    pts.push({ x: Math.cos(t) * r, y, z: Math.sin(t) * r, nb: [] });
+  }
+  // vizinhos mais próximos (precomputado uma vez) para as linhas
+  for (let i = 0; i < n; i++) {
+    const d: { j: number; dist: number }[] = [];
+    for (let j = 0; j < n; j++) {
+      if (i === j) continue;
+      const dx = pts[i].x - pts[j].x;
+      const dy = pts[i].y - pts[j].y;
+      const dz = pts[i].z - pts[j].z;
+      d.push({ j, dist: dx * dx + dy * dy + dz * dz });
+    }
+    d.sort((a, b) => a.dist - b.dist);
+    pts[i].nb = d.slice(0, NEIGHBORS).map((o) => o.j);
   }
   return pts;
 }
+
+const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 export default function Sphere() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -31,18 +47,17 @@ export default function Sphere() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const points = fibonacciSphere(DOT_COUNT);
+    const points = buildSphere(DOT_COUNT);
     const reduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
     let w = 0;
     let h = 0;
-    let dpr = 1;
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       w = rect.width;
       h = rect.height;
       canvas.width = Math.round(w * dpr);
@@ -53,62 +68,98 @@ export default function Sphere() {
     const ro = new ResizeObserver(resize);
     ro.observe(canvas);
 
-    // mouse parallax (alvo suavizado)
     let targetRX = 0;
     let targetRY = 0;
     let rx = 0;
     let ry = 0;
     const onMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
-      const nx = (e.clientX - rect.left) / rect.width - 0.5;
-      const ny = (e.clientY - rect.top) / rect.height - 0.5;
-      targetRY = nx * 0.6;
-      targetRX = ny * 0.6;
+      targetRY = ((e.clientX - rect.left) / rect.width - 0.5) * 0.7;
+      targetRX = ((e.clientY - rect.top) / rect.height - 0.5) * 0.7;
     };
     window.addEventListener("mousemove", onMove);
 
+    // buffers de projeção reutilizados
+    const px = new Float32Array(DOT_COUNT);
+    const py = new Float32Array(DOT_COUNT);
+    const pd = new Float32Array(DOT_COUNT); // depth 0..1
+
     let angle = 0;
+    let t = 0;
     let raf = 0;
 
     const frame = () => {
-      const radius = Math.min(w, h) * 0.42;
-      const cx = w / 2;
-      const cy = h / 2;
-
-      ctx.clearRect(0, 0, w, h);
-
-      if (!reduced) angle += 0.0022;
+      t += 0.016;
+      if (!reduced) angle += 0.0024;
       rx += (targetRX - rx) * 0.06;
       ry += (targetRY - ry) * 0.06;
+
+      const breathe = reduced ? 1 : 1 + Math.sin(t * 0.8) * 0.025;
+      const base = Math.min(w, h) * 0.42 * breathe;
+      const cx = w / 2;
+      const cy = h / 2;
+      const scale = Math.min(w, h) / 520;
 
       const ay = angle + ry;
       const sinY = Math.sin(ay);
       const cosY = Math.cos(ay);
-      const sinX = Math.sin(rx);
-      const cosX = Math.cos(rx);
+      const tilt = rx + (reduced ? 0 : Math.sin(t * 0.5) * 0.12);
+      const sinX = Math.sin(tilt);
+      const cosX = Math.cos(tilt);
 
-      for (const p of points) {
-        // rotação em Y
-        let x = p.x * cosY - p.z * sinY;
-        let z = p.x * sinY + p.z * cosY;
-        let y = p.y;
-        // leve inclinação em X (mouse)
-        const y2 = y * cosX - z * sinX;
-        const z2 = y * sinX + z * cosX;
-        y = y2;
-        z = z2;
+      ctx.clearRect(0, 0, w, h);
 
-        // perspectiva: z em [-1,1], mais perto = maior/opaco
-        const depth = (z + 1) / 2; // 0..1
-        const persp = 0.65 + depth * 0.35;
-        const px = cx + x * radius * persp;
-        const py = cy + y * radius * persp;
-        const dot = (0.6 + depth * 1.7) * (Math.min(w, h) / 520);
-        const alpha = 0.18 + depth * depth * 0.82;
+      // glow radial atrás da esfera
+      const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, base * 1.5);
+      glow.addColorStop(0, "rgba(155, 89, 182, 0.10)");
+      glow.addColorStop(0.5, "rgba(161, 179, 195, 0.05)");
+      glow.addColorStop(1, "rgba(255, 255, 255, 0)");
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, 0, w, h);
 
+      // projeta todos os pontos
+      for (let i = 0; i < DOT_COUNT; i++) {
+        const p = points[i];
+        const x1 = p.x * cosY - p.z * sinY;
+        const z1 = p.x * sinY + p.z * cosY;
+        const y2 = p.y * cosX - z1 * sinX;
+        const z2 = p.y * sinX + z1 * cosX;
+        const depth = (z2 + 1) / 2;
+        const persp = 0.62 + depth * 0.38;
+        px[i] = cx + x1 * base * persp;
+        py[i] = cy + y2 * base * persp;
+        pd[i] = depth;
+      }
+
+      // linhas de constelação (atrás dos pontos)
+      ctx.lineWidth = 0.6;
+      for (let i = 0; i < DOT_COUNT; i++) {
+        const nb = points[i].nb;
+        for (let k = 0; k < nb.length; k++) {
+          const j = nb[k];
+          if (j < i) continue; // desenha cada par uma vez
+          const dd = (pd[i] + pd[j]) / 2;
+          const a = dd * dd * 0.16;
+          if (a < 0.012) continue;
+          ctx.strokeStyle = `rgba(161, 179, 195, ${a})`;
+          ctx.beginPath();
+          ctx.moveTo(px[i], py[i]);
+          ctx.lineTo(px[j], py[j]);
+          ctx.stroke();
+        }
+      }
+
+      // pontos (cor roxo perto -> azul-cinza longe)
+      for (let i = 0; i < DOT_COUNT; i++) {
+        const depth = pd[i];
+        const r = Math.round(lerp(161, 155, depth));
+        const g = Math.round(lerp(179, 89, depth));
+        const b = Math.round(lerp(195, 182, depth));
+        const alpha = 0.16 + depth * depth * 0.84;
+        const dot = Math.max((0.5 + depth * 1.8) * scale, 0.4);
         ctx.beginPath();
-        ctx.fillStyle = `rgba(${ACCENT}, ${alpha})`;
-        ctx.arc(px, py, Math.max(dot, 0.4), 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        ctx.arc(px[i], py[i], dot, 0, Math.PI * 2);
         ctx.fill();
       }
 
@@ -124,7 +175,7 @@ export default function Sphere() {
   }, []);
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center select-none cursor-pointer">
+    <div className="relative flex h-full w-full cursor-pointer select-none items-center justify-center">
       <canvas
         ref={canvasRef}
         aria-hidden

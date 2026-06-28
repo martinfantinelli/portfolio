@@ -5,6 +5,16 @@ export default function Home() {
   return (
     <main className="w-full grow flex">
       <div className="relative w-full min-h-dvh overflow-hidden bg-background">
+        {/* FUNDO: halo radial sutil para o branco não ficar chapado */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-0"
+          style={{
+            background:
+              "radial-gradient(55% 50% at 50% 52%, rgba(155,89,182,0.06), rgba(161,179,195,0.04) 45%, rgba(255,255,255,0) 72%)",
+          }}
+        />
+
         {/* CENTRO: esfera (atrás do texto para mantê-lo legível) */}
         <div className="absolute inset-0 z-10 flex items-center justify-center px-4 pt-8 md:pt-10">
           <Sphere />
