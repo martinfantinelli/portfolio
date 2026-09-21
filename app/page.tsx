@@ -1,4 +1,4 @@
-import Sphere from "@/components/Sphere";
+import HeroScene from "@/components/HeroScene";
 import ProjectsList from "@/components/ProjectsList";
 import Hero from "@/components/Hero";
 import AnimatedLink from "@/components/AnimatedLink";
@@ -6,22 +6,19 @@ import AnimatedLink from "@/components/AnimatedLink";
 export default function Home() {
   return (
     <div id="top" className="relative w-full">
-      {/* HERO: pinado. O painel de projetos sobe por cima (efeito silo). */}
-      <section className="sticky top-0 z-0 h-dvh w-full overflow-hidden bg-background">
-        {/* halo radial sutil para o branco não ficar chapado */}
+      {/* HERO: pinado, tema escuro. O painel de projetos (claro) sobe por
+          cima e revela a transição, como um "amanhecer" (efeito silo). */}
+      <section className="sticky top-0 z-0 h-dvh w-full overflow-hidden bg-black">
+        {/* cena 3D (R3F): núcleo distorcido + grid de piso, atrás do texto */}
+        <div className="absolute inset-0 z-10">
+          <HeroScene />
+        </div>
+
+        {/* vinheta para garantir contraste do texto sobre a cena */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 z-0"
-          style={{
-            background:
-              "radial-gradient(55% 50% at 50% 52%, rgba(226,48,48,0.06), rgba(217,119,87,0.035) 45%, rgba(255,255,255,0) 72%)",
-          }}
+          className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-b from-black/70 via-black/10 to-black/80"
         />
-
-        {/* esfera (atrás do texto para mantê-lo legível) */}
-        <div className="absolute inset-0 z-10 flex items-center justify-center px-4 pt-8 md:pt-10">
-          <Sphere />
-        </div>
 
         <Hero />
       </section>
