@@ -69,14 +69,4 @@ export const projects: Project[] = [
     image: "/projects/poa-petcare.png",
     live: "https://poa-petcare-24h-tw0q3.vercel.app/",
   },
-  {
-    slug: "placeholder-06",
-    name: "Working Title 06",
-    category: "Marketplace",
-    description:
-      "Placeholder case study — two-sided marketplace with search, filtering, and seller onboarding.",
-    tech: ["Next.js", "PostgreSQL", "Redis"],
-    year: "2023",
-    image: "/projects/placeholder-06.png",
-  },
 ];
