@@ -26,14 +26,14 @@ export default function Home() {
       {/* PROJETOS: desliza por cima do hero pinado */}
       <section
         id="projects"
-        className="relative z-10 min-h-dvh w-full bg-background shadow-[0_-24px_60px_-20px_rgba(20,20,19,0.12)]"
+        className="relative z-10 min-h-dvh w-full bg-background shadow-[0_-32px_80px_-16px_rgba(0,0,0,0.8)]"
       >
         <div className="mx-auto flex min-h-dvh w-full max-w-5xl flex-col px-4 py-10 md:px-8 md:py-16">
-          <header className="flex items-baseline justify-between">
-            <span className="text-[11px] font-medium uppercase tracking-label text-secondary">
-              Selected work
+          <header className="flex items-baseline justify-between border-b border-hairline pb-4">
+            <span className="font-mono text-[11px] font-medium uppercase tracking-label text-primary">
+              // selected work
             </span>
-            <span className="text-[11px] font-medium uppercase tracking-label text-secondary">
+            <span className="font-mono text-[11px] font-medium uppercase tracking-label text-secondary">
               Projects
             </span>
           </header>
@@ -42,7 +42,7 @@ export default function Home() {
             <ProjectsList />
           </div>
 
-          <footer className="mt-16 flex justify-between text-[11px] font-medium uppercase tracking-label">
+          <footer className="mt-16 flex justify-between border-t border-hairline pt-6 font-mono text-[11px] font-medium uppercase tracking-label">
             <AnimatedLink href="#top">↑ Top</AnimatedLink>
             <a
               href="https://github.com/martinfantinelli"

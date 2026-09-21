@@ -2,128 +2,113 @@
 
 import { useMemo, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Float, Grid, MeshDistortMaterial } from "@react-three/drei";
 import * as THREE from "three";
 
-const ACCENT = "#ff5a36";
+const ORANGE = "#ff7a54";
 
-// Objeto central: icosaedro distorcido com casca wireframe sobreposta.
-// Reage à posição do mouse (parallax de rotação) e flutua suavemente.
-function DistortedCore() {
-  const group = useRef<THREE.Group>(null);
-  const wireframe = useRef<THREE.Mesh>(null);
+// ─── Particle field ──────────────────────────────────────────────────────────
+// 52×38 grid of dots displaced on Z by a compound sine wave.
+// The wave phase is driven by the cursor position — ripples flow toward
+// wherever the mouse is pointing.
+
+function ParticleField() {
+  const ref = useRef<THREE.Points>(null);
   const { viewport } = useThree();
 
-  useFrame((state) => {
-    const { pointer, clock } = state;
-    const t = clock.getElapsedTime();
-    if (group.current) {
-      group.current.rotation.y = t * 0.12 + pointer.x * 0.5;
-      group.current.rotation.x = t * 0.05 + pointer.y * 0.25;
-    }
-    if (wireframe.current) {
-      wireframe.current.rotation.y = -t * 0.08;
-      wireframe.current.rotation.z = t * 0.04;
-    }
-  });
+  const COLS = 52;
+  const ROWS = 38;
+  const count = COLS * ROWS;
 
-  const scale = Math.min(viewport.width, viewport.height) * 0.34;
-
-  return (
-    <group ref={group} scale={scale}>
-      <mesh>
-        <icosahedronGeometry args={[1, 4]} />
-        <MeshDistortMaterial
-          color={ACCENT}
-          emissive={ACCENT}
-          emissiveIntensity={0.35}
-          roughness={0.15}
-          metalness={0.6}
-          distort={0.32}
-          speed={1.4}
-        />
-      </mesh>
-      <mesh ref={wireframe} scale={1.28}>
-        <icosahedronGeometry args={[1, 1]} />
-        <meshBasicMaterial color={ACCENT} wireframe transparent opacity={0.18} />
-      </mesh>
-    </group>
-  );
-}
-
-// Partículas dispersas ao fundo para dar profundidade sem competir com o core.
-function Dust() {
-  const count = 240;
-  const positions = useMemo(() => {
-    const arr = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      arr[i * 3] = (Math.random() - 0.5) * 14;
-      arr[i * 3 + 1] = (Math.random() - 0.5) * 8;
-      arr[i * 3 + 2] = (Math.random() - 0.5) * 10 - 2;
+  const { positions, baseXY } = useMemo(() => {
+    const positions = new Float32Array(count * 3);
+    const baseXY = new Float32Array(count * 2);
+    const w = viewport.width * 1.1;
+    const h = viewport.height * 1.1;
+    let i = 0;
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c < COLS; c++) {
+        const x = (c / (COLS - 1) - 0.5) * w;
+        const y = (r / (ROWS - 1) - 0.5) * h;
+        positions[i * 3]     = x;
+        positions[i * 3 + 1] = y;
+        positions[i * 3 + 2] = 0;
+        baseXY[i * 2]     = x;
+        baseXY[i * 2 + 1] = y;
+        i++;
+      }
     }
-    return arr;
+    return { positions, baseXY };
+  // viewport dims are stable after mount
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const points = useRef<THREE.Points>(null);
 
   useFrame((state) => {
-    if (points.current) {
-      points.current.rotation.y = state.clock.getElapsedTime() * 0.015;
+    const geo = ref.current?.geometry;
+    if (!geo) return;
+    const pos = geo.attributes.position as THREE.BufferAttribute;
+    const t  = state.clock.getElapsedTime();
+    const mx = state.pointer.x * (viewport.width  / 2);
+    const my = state.pointer.y * (viewport.height / 2);
+
+    for (let i = 0; i < count; i++) {
+      const bx = baseXY[i * 2];
+      const by = baseXY[i * 2 + 1];
+      const dx = bx - mx;
+      const dy = by - my;
+      const dist      = Math.sqrt(dx * dx + dy * dy);
+      const influence = Math.exp(-dist * 0.18) * 0.9;
+
+      const z =
+        Math.sin(bx * 0.35 + t * 0.6)  * 0.18 +
+        Math.sin(by * 0.45 + t * 0.5)  * 0.14 +
+        Math.sin(dist * 0.5 - t * 2.2) * influence;
+
+      pos.setXYZ(i, bx, by, z);
     }
+    pos.needsUpdate = true;
   });
 
   return (
-    <points ref={points}>
+    <points ref={ref}>
       <bufferGeometry>
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
-      <pointsMaterial color="#ff8a6a" size={0.02} sizeAttenuation transparent opacity={0.5} />
+      <pointsMaterial
+        color={ORANGE}
+        size={0.028}
+        sizeAttenuation
+        transparent
+        opacity={0.28}
+        depthWrite={false}
+      />
     </points>
   );
 }
 
+// ─── Camera parallax ─────────────────────────────────────────────────────────
+
 function Rig() {
   const { camera } = useThree();
   useFrame((state) => {
-    camera.position.x += (state.pointer.x * 0.6 - camera.position.x) * 0.03;
-    camera.position.y += (-state.pointer.y * 0.35 + 0.4 - camera.position.y) * 0.03;
+    camera.position.x += (state.pointer.x * 0.5  - camera.position.x) * 0.04;
+    camera.position.y += (-state.pointer.y * 0.3 + 0.2 - camera.position.y) * 0.04;
     camera.lookAt(0, 0, 0);
   });
   return null;
 }
 
+// ─── Scene ───────────────────────────────────────────────────────────────────
+
 export default function HeroScene() {
   return (
     <Canvas
-      camera={{ position: [0, 0.4, 6.2], fov: 42 }}
-      dpr={[1, 2]}
+      camera={{ position: [0, 0, 5.5], fov: 50 }}
+      dpr={[1, 1.5]}
       gl={{ antialias: true, alpha: true }}
     >
       <color attach="background" args={["#000000"]} />
-      <fog attach="fog" args={["#000000", 5, 13]} />
-      <ambientLight intensity={0.4} />
-      <pointLight position={[4, 4, 4]} intensity={40} color={ACCENT} />
-      <pointLight position={[-5, -3, -2]} intensity={12} color="#3a6bff" />
-
-      <Float speed={1.4} rotationIntensity={0.15} floatIntensity={0.6}>
-        <DistortedCore />
-      </Float>
-
-      <Dust />
-
-      <Grid
-        position={[0, -2.4, 0]}
-        args={[24, 24]}
-        cellSize={0.6}
-        cellThickness={0.5}
-        cellColor="#3a1a12"
-        sectionSize={3}
-        sectionThickness={1}
-        sectionColor={ACCENT}
-        fadeDistance={14}
-        fadeStrength={1.5}
-        infiniteGrid
-      />
-
+      <fog attach="fog" args={["#000000", 6, 14]} />
+      <ParticleField />
       <Rig />
     </Canvas>
   );

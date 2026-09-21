@@ -1,10 +1,6 @@
-// Vitrine curada.
-//
-// PLACEHOLDER DATA: every entry below is a mock case study used to design
-// and preview the "Selected work" section. Replace each one with a real
-// project (name, description, tags, year, cover image under /public/projects,
-// and links) when that content is ready — the shape of `Project` stays the
-// same, so swapping content is a drop-in edit here.
+// Vitrine curada — projetos reais.
+// Imagens: coloque capturas de tela em /public/projects/<slug>.png
+// e remova o fallback placeholder correspondente quando estiver pronto.
 export type Project = {
   slug: string;
   name: string;
@@ -19,54 +15,59 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: "placeholder-01",
-    name: "Working Title 01",
-    category: "Fintech dashboard",
+    slug: "feixe",
+    name: "Feixe",
+    category: "SaaS · Lead intelligence",
     description:
-      "Placeholder case study — real-time analytics dashboard with anomaly detection and exportable reports.",
-    tech: ["Next.js", "TypeScript", "PostgreSQL"],
+      "Reads every Instagram comment, DM and story reply, identifies who is close to buying, and returns a priority queue so teams respond to the right people first — before the 24-hour API window closes.",
+    tech: ["Next.js", "TypeScript", "Meta API", "OpenAI"],
     year: "2025",
-    image: "/projects/placeholder-01.png",
+    image: "/projects/feixe.png",
+    live: "https://feixeapp.com",
   },
   {
-    slug: "placeholder-02",
-    name: "Working Title 02",
-    category: "Mobile commerce",
+    slug: "proventa",
+    name: "Proventa",
+    category: "Fintech · Crypto accounting",
     description:
-      "Placeholder case study — mobile-first storefront with a streamlined checkout and inventory sync.",
-    tech: ["React Native", "Node.js", "Stripe"],
+      "Audit-grade crypto wallet proof for Brazilian accounting firms. Wallet ownership is verified on-chain via EIP-191 signatures — no private keys ever leave the client — and movement reports are exported with an append-only hash chain.",
+    tech: ["Next.js", "TypeScript", "Ethereum", "LGPD"],
     year: "2025",
-    image: "/projects/placeholder-02.png",
+    image: "/projects/proventa.png",
+    live: "https://proventa-git-master-martinfantinellis-projects.vercel.app/",
   },
   {
-    slug: "placeholder-03",
-    name: "Working Title 03",
-    category: "SaaS platform",
+    slug: "tontos-cookies",
+    name: "Tonto's Cookies",
+    category: "E-commerce · Food & beverage",
     description:
-      "Placeholder case study — multi-tenant workspace tooling with role-based access and audit trails.",
-    tech: ["Next.js", "Drizzle", "TailwindCSS"],
-    year: "2024",
-    image: "/projects/placeholder-03.png",
+      "Online ordering experience for a New York-style cookie shop in La Plata. Customers build their order by flavor, then checkout through Rappi or WhatsApp — no cart friction, no account required.",
+    tech: ["Next.js", "TailwindCSS", "TypeScript"],
+    year: "2025",
+    image: "/projects/tontos-cookies.png",
+    live: "https://tontos-cookies.vercel.app/",
   },
   {
-    slug: "placeholder-04",
-    name: "Working Title 04",
-    category: "Brand & web",
+    slug: "nutallo",
+    name: "Nutallo",
+    category: "Web app",
     description:
-      "Placeholder case study — identity system and marketing site built for a fast-moving launch.",
-    tech: ["Next.js", "Framer Motion", "TailwindCSS"],
-    year: "2024",
-    image: "/projects/placeholder-04.png",
+      "A client project built and deployed on Vercel. Replace this description once you add the real details about what Nutallo does.",
+    tech: ["Next.js", "TypeScript", "TailwindCSS"],
+    year: "2025",
+    image: "/projects/nutallo.png",
+    live: "https://nutallo.vercel.app/",
   },
   {
-    slug: "placeholder-05",
-    name: "Working Title 05",
-    category: "Data visualization",
+    slug: "poa-petcare",
+    name: "POA PetCare 24H",
+    category: "Healthcare · Veterinary",
     description:
-      "Placeholder case study — interactive network graph for exploring large relational datasets.",
-    tech: ["TypeScript", "Canvas", "D3.js"],
-    year: "2024",
-    image: "/projects/placeholder-05.png",
+      "Marketing site for a 24/7 veterinary clinic in Porto Alegre. Highlights emergency care, full surgical facilities and specialist coverage, giving pet owners confidence to reach out at any hour.",
+    tech: ["Next.js", "TailwindCSS", "TypeScript"],
+    year: "2025",
+    image: "/projects/poa-petcare.png",
+    live: "https://poa-petcare-24h-tw0q3.vercel.app/",
   },
   {
     slug: "placeholder-06",

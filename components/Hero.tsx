@@ -2,21 +2,21 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
+import type { Variants } from "motion/react";
+import CursorGlow from "@/components/CursorGlow";
+import MagneticName from "@/components/MagneticName";
 
-const line = {
+const line: Variants = {
   hidden: { opacity: 0, y: 14 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.15 + i * 0.09 },
+    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const, delay: 0.15 + i * 0.09 },
   }),
 };
 
 const STACK = ["TypeScript", "React", "Node.js", "PostgreSQL"];
 
-// Hero em split-screen: introdução estilo terminal à esquerda, cena 3D
-// (HeroScene, R3F) ocupando o fundo/lado direito. Substitui o wordmark
-// gigante + esfera canvas anterior por uma composição escura e técnica.
 export default function Hero() {
   const [caret, setCaret] = useState(true);
   const [time, setTime] = useState<string | null>(null);
@@ -41,92 +41,98 @@ export default function Hero() {
   }, []);
 
   return (
-    <div className="relative z-20 flex h-full w-full flex-col justify-between px-5 py-5 text-white md:px-10 md:py-8">
-      <motion.header
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-        className="flex items-center justify-between text-[11px] font-medium uppercase tracking-label text-white/50"
-      >
-        <span className="font-mono text-[#ff7a54]">martin.fantinelli</span>
-        <nav className="flex gap-6">
-          <a href="#projects" className="transition-colors duration-200 hover:text-white">
-            Projects
-          </a>
-          <a
-            href="https://martinfantinelli.dev"
-            className="transition-colors duration-200 hover:text-white"
-          >
-            Blog
-          </a>
-        </nav>
-      </motion.header>
+    <>
+      {/* Cursor orb — fixed overlay, sits behind all hero content */}
+      <CursorGlow />
 
-      <div className="max-w-xl">
-        <motion.p
-          custom={0}
-          initial="hidden"
-          animate="visible"
-          variants={line}
-          className="font-mono text-[11px] uppercase tracking-label text-[#ff7a54]"
+      <div className="relative z-20 flex h-full w-full flex-col justify-between px-5 py-5 text-white md:px-10 md:py-8">
+        <motion.header
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="flex items-center justify-between text-[11px] font-medium uppercase tracking-label text-white/50"
         >
-          {"// fullstack software engineer"}
-        </motion.p>
-
-        <h1 className="mt-3 font-black leading-[0.95] tracking-[-0.02em] text-[clamp(2.5rem,7vw,4.75rem)]">
-          <motion.span custom={1} initial="hidden" animate="visible" variants={line} className="block">
-            Martin
-          </motion.span>
-          <motion.span custom={2} initial="hidden" animate="visible" variants={line} className="block">
-            Fantinelli
-          </motion.span>
-        </h1>
-
-        <motion.p
-          custom={3}
-          initial="hidden"
-          animate="visible"
-          variants={line}
-          className="mt-5 max-w-md font-mono text-sm leading-relaxed text-white/55"
-        >
-          Building fast, reliable products for teams that ship. Based in Porto
-          Alegre, Brazil — working with clients worldwide.
-          <span className={caret ? "opacity-100" : "opacity-0"}>▍</span>
-        </motion.p>
-
-        <motion.ul
-          custom={4}
-          initial="hidden"
-          animate="visible"
-          variants={line}
-          className="mt-6 flex flex-wrap gap-2"
-        >
-          {STACK.map((s) => (
-            <li
-              key={s}
-              className="rounded-full border border-white/15 px-3 py-1 font-mono text-[11px] text-white/70"
+          <span className="font-mono text-[#ff7a54]">martin.fantinelli</span>
+          <nav className="flex gap-6">
+            <a href="#projects" className="transition-colors duration-200 hover:text-white">
+              Projects
+            </a>
+            <a
+              href="https://martinfantinelli.dev"
+              className="transition-colors duration-200 hover:text-white"
             >
-              {s}
-            </li>
-          ))}
-        </motion.ul>
-      </div>
+              Blog
+            </a>
+          </nav>
+        </motion.header>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.9 }}
-        className="flex items-center justify-between font-mono text-[11px] uppercase tracking-label text-white/40"
-      >
-        <span suppressHydrationWarning>Porto Alegre, BR · {time ?? "--:--"}</span>
-        <motion.span
-          animate={{ y: [0, 5, 0] }}
-          transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-          className="flex items-center gap-1 text-white/60"
+        <div className="max-w-xl">
+          <motion.p
+            custom={0}
+            initial="hidden"
+            animate="visible"
+            variants={line}
+            className="font-mono text-[11px] uppercase tracking-label text-[#ff7a54]"
+          >
+            {"// fullstack software engineer"}
+          </motion.p>
+
+          {/* Name — each letter repels from the cursor */}
+          <h1 className="mt-3 font-black leading-[0.95] tracking-[-0.02em] text-[clamp(2.5rem,7vw,4.75rem)]">
+            <motion.div custom={1} initial="hidden" animate="visible" variants={line} className="block">
+              <MagneticName text="Martin" />
+            </motion.div>
+            <motion.div custom={2} initial="hidden" animate="visible" variants={line} className="block">
+              <MagneticName text="Fantinelli" />
+            </motion.div>
+          </h1>
+
+          <motion.p
+            custom={3}
+            initial="hidden"
+            animate="visible"
+            variants={line}
+            className="mt-5 max-w-md font-mono text-sm leading-relaxed text-white/55"
+          >
+            Building fast, reliable products for teams that ship. Based in Porto
+            Alegre, Brazil — working with clients worldwide.
+            <span className={caret ? "opacity-100" : "opacity-0"}>▍</span>
+          </motion.p>
+
+          <motion.ul
+            custom={4}
+            initial="hidden"
+            animate="visible"
+            variants={line}
+            className="mt-6 flex flex-wrap gap-2"
+          >
+            {STACK.map((s) => (
+              <li
+                key={s}
+                className="rounded-full border border-white/15 px-3 py-1 font-mono text-[11px] text-white/70"
+              >
+                {s}
+              </li>
+            ))}
+          </motion.ul>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.9 }}
+          className="flex items-center justify-between font-mono text-[11px] uppercase tracking-label text-white/40"
         >
-          Scroll <span aria-hidden>↓</span>
-        </motion.span>
-      </motion.div>
-    </div>
+          <span suppressHydrationWarning>Porto Alegre, BR · {time ?? "--:--"}</span>
+          <motion.span
+            animate={{ y: [0, 5, 0] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+            className="flex items-center gap-1 text-white/60"
+          >
+            Scroll <span aria-hidden>↓</span>
+          </motion.span>
+        </motion.div>
+      </div>
+    </>
   );
 }

@@ -2,16 +2,16 @@
 
 /* Design tokens (area.tech-derived). See AREA reverse-engineering doc. */
 @theme {
-  --color-background: #ffffff;
-  --color-foreground: #000000;
-  --color-primary: #a1b3c3; /* azul-cinza: wordmark, icones */
-  --color-secondary: #8696a4; /* micro-tipografia: tagline, labels */
+  --color-background: #0a0a0a;
+  --color-foreground: #f0ede8;
+  --color-primary: #ff7a54; /* laranja: acento terminal */
+  --color-secondary: #6b6b6b; /* micro-tipografia: labels, meta */
   --color-accent: #9b59b6; /* roxo: esfera */
   --color-sand: #faf9f5;
   --color-terracotta: #d97757;
-  --color-hairline: #d6dce2;
-  --color-card: #faf9f7; /* fundo dos cards de projeto */
-  --color-card-border: #e7e2da;
+  --color-hairline: #2a2a2a;
+  --color-card: #111111; /* fundo dos cards de projeto */
+  --color-card-border: #222222;
 
   --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
