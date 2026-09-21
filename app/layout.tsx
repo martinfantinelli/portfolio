@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 // ponytail: troque para o dominio final do portfolio quando definir
@@ -37,6 +38,7 @@ export default function RootLayout({
     <html lang="en" className="h-full scroll-smooth antialiased">
       <body className="min-h-full flex flex-col bg-background text-foreground">
         {children}
+        <Analytics />
       </body>
     </html>
   );
