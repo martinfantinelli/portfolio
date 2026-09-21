@@ -21,7 +21,7 @@ export const projects: Project[] = [
     description:
       "Reads every Instagram comment, DM and story reply, identifies who is close to buying, and returns a priority queue so teams respond to the right people first — before the 24-hour API window closes.",
     tech: ["Next.js", "TypeScript", "Meta API", "OpenAI"],
-    year: "2025",
+    year: "2026",
     image: "/projects/feixe.png",
     live: "https://feixeapp.com",
   },
@@ -32,7 +32,7 @@ export const projects: Project[] = [
     description:
       "Audit-grade crypto wallet proof for Brazilian accounting firms. Wallet ownership is verified on-chain via EIP-191 signatures — no private keys ever leave the client — and movement reports are exported with an append-only hash chain.",
     tech: ["Next.js", "TypeScript", "Ethereum", "LGPD"],
-    year: "2025",
+    year: "2026",
     image: "/projects/proventa.png",
     live: "https://proventa-bay.vercel.app/",
   },
@@ -65,7 +65,7 @@ export const projects: Project[] = [
     description:
       "Marketing site for a 24/7 veterinary clinic in Porto Alegre. Highlights emergency care, full surgical facilities and specialist coverage, giving pet owners confidence to reach out at any hour.",
     tech: ["Next.js", "TailwindCSS", "TypeScript"],
-    year: "2025",
+    year: "2023",
     image: "/projects/poa-petcare.png",
     live: "https://poa-petcare-24h-tw0q3.vercel.app/",
   },
@@ -76,7 +76,7 @@ export const projects: Project[] = [
     description:
       "AI that runs the financial back-office of Brazilian businesses. Connects to banks, gateways, ad accounts and sales platforms, unifies every transaction into a single model, and answers natural-language queries — no spreadsheet required.",
     tech: ["Next.js", "TypeScript", "TailwindCSS"],
-    year: "2025",
+    year: "2026",
     image: "/projects/atehra.png",
     live: "https://atehra.com/",
   },
