@@ -42,16 +42,47 @@ export default function Home() {
             <ProjectsList />
           </div>
 
-          <footer className="mt-16 flex justify-between border-t border-hairline pt-6 font-mono text-[11px] font-medium uppercase tracking-label">
-            <AnimatedLink href="#top">↑ Top</AnimatedLink>
-            <a
-              href="https://github.com/martinfantinelli"
-              target="_blank"
-              rel="noreferrer"
-              className="text-secondary transition-colors duration-200 hover:text-foreground"
-            >
-              GitHub
-            </a>
+          <footer className="mt-16 border-t border-hairline pt-10">
+            {/* Contact & social row */}
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+              <div className="flex flex-col gap-1">
+                <span className="font-mono text-[10px] uppercase tracking-label text-secondary">
+                  Get in touch
+                </span>
+                <a
+                  href="mailto:martinsfantinelli@gmail.com"
+                  className="font-mono text-sm text-foreground transition-colors duration-200 hover:text-primary"
+                >
+                  martinsfantinelli@gmail.com
+                </a>
+              </div>
+
+              <nav className="flex gap-6 font-mono text-[11px] uppercase tracking-label">
+                <a
+                  href="https://github.com/martinfantinelli"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-secondary transition-colors duration-200 hover:text-foreground"
+                >
+                  GitHub
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/martin-fantinelli/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-secondary transition-colors duration-200 hover:text-foreground"
+                >
+                  LinkedIn
+                </a>
+                <AnimatedLink href="#top">↑ Top</AnimatedLink>
+              </nav>
+            </div>
+
+            {/* Legal row */}
+            <div className="mt-8 flex flex-col gap-1 border-t border-hairline pt-6 font-mono text-[10px] uppercase tracking-label text-secondary sm:flex-row sm:justify-between">
+              <span>M. Scherer Fantinelli Ltda · CNPJ 69.193.476/0001-92</span>
+              <span>© {new Date().getFullYear()} Martin Fantinelli</span>
+            </div>
           </footer>
         </div>
       </section>
