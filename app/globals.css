@@ -10,6 +10,8 @@
   --color-sand: #faf9f5;
   --color-terracotta: #d97757;
   --color-hairline: #d6dce2;
+  --color-card: #faf9f7; /* fundo dos cards de projeto */
+  --color-card-border: #e7e2da;
 
   --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
