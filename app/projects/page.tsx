@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ProjectsList from "@/components/ProjectsList";
+import AnimatedLink from "@/components/AnimatedLink";
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function ProjectsPage() {
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-3xl flex-col px-4 py-8 md:px-8 md:py-12">
+    <main className="mx-auto flex min-h-dvh w-full max-w-5xl flex-col px-4 py-8 md:px-8 md:py-12">
       <header className="flex items-baseline justify-between">
         <Link
           href="/"
@@ -26,18 +27,13 @@ export default function ProjectsPage() {
         <ProjectsList />
       </div>
 
-      <footer className="mt-16 flex justify-between text-[11px] font-medium uppercase tracking-label text-secondary">
-        <Link
-          href="/"
-          className="transition-colors duration-200 hover:text-foreground"
-        >
-          ← Home
-        </Link>
+      <footer className="mt-16 flex justify-between text-[11px] font-medium uppercase tracking-label">
+        <AnimatedLink href="/">← Home</AnimatedLink>
         <a
           href="https://github.com/martinfantinelli"
           target="_blank"
           rel="noreferrer"
-          className="transition-colors duration-200 hover:text-foreground"
+          className="text-secondary transition-colors duration-200 hover:text-foreground"
         >
           GitHub
         </a>
