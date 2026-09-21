@@ -34,7 +34,7 @@ export const projects: Project[] = [
     tech: ["Next.js", "TypeScript", "Ethereum", "LGPD"],
     year: "2025",
     image: "/projects/proventa.png",
-    live: "https://proventa-git-master-martinfantinellis-projects.vercel.app/",
+    live: "https://proventa-bay.vercel.app/",
   },
   {
     slug: "tontos-cookies",
