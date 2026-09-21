@@ -69,4 +69,15 @@ export const projects: Project[] = [
     image: "/projects/poa-petcare.png",
     live: "https://poa-petcare-24h-tw0q3.vercel.app/",
   },
+  {
+    slug: "atehra",
+    name: "Atehra",
+    category: "Fintech · AI financial operator",
+    description:
+      "AI that runs the financial back-office of Brazilian businesses. Connects to banks, gateways, ad accounts and sales platforms, unifies every transaction into a single model, and answers natural-language queries — no spreadsheet required.",
+    tech: ["Next.js", "TypeScript", "TailwindCSS"],
+    year: "2025",
+    image: "/projects/atehra.png",
+    live: "https://atehra.com/",
+  },
 ];
