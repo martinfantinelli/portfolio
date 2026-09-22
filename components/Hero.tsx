@@ -59,7 +59,10 @@ export default function Hero() {
             </a>
             <a
               href="https://martinfantinelli.dev"
-              className="transition-colors duration-200 hover:text-white"
+              className="cursor-not-allowed opacity-30"
+              aria-disabled="true"
+              tabIndex={-1}
+              onClick={(e) => e.preventDefault()}
             >
               Blog
             </a>
