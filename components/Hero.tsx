@@ -15,7 +15,7 @@ const line: Variants = {
   }),
 };
 
-const STACK = ["TypeScript", "React", "Node.js", "PostgreSQL"];
+const STACK = ["Java", "Spring Boot", "TypeScript", "React", "Node.js", "Rust", "PostgreSQL"];
 
 export default function Hero() {
   const [caret, setCaret] = useState(true);
