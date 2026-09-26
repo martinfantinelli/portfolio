@@ -58,11 +58,8 @@ export default function Hero() {
               Projects
             </a>
             <a
-              href="https://martinfantinelli.dev"
-              className="cursor-not-allowed opacity-30"
-              aria-disabled="true"
-              tabIndex={-1}
-              onClick={(e) => e.preventDefault()}
+              href="/blog"
+              className="transition-colors duration-200 hover:text-white"
             >
               Blog
             </a>
