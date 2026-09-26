@@ -1,56 +1,69 @@
 export type Post = {
-  slug: string;
+  slug: string; // body lives in content/blog/<slug>.md (PT: <slug>.pt.md)
   title: string;
+  titlePt?: string;
   summary: string;
+  summaryPt?: string;
   date: string; // ISO 8601
-  readingTime: string; // e.g. "4 min read"
+  readingTime: string;
+  readingTimePt?: string;
   tags: string[];
-  content: string; // markdown-ish plain text for now
-  image?: string; // /blog/<slug>.png
+  image?: string; // /blog/<file>
 };
 
 export const posts: Post[] = [
   {
     slug: "why-i-build-for-small-businesses",
     title: "Why I build for small businesses",
+    titlePt: "Por que eu construo para pequenos negócios",
     summary:
       "Most dev tooling is built for scale. But the most interesting problems — and the fastest feedback loops — live in the long tail of small, specific, real businesses.",
-    date: "2025-09-01",
+    summaryPt:
+      "A maioria das ferramentas de dev é feita para escala. Mas os problemas mais interessantes — e os loops de feedback mais rápidos — vivem na cauda longa dos pequenos negócios reais.",
+    date: "2026-09-01",
     readingTime: "4 min read",
+    readingTimePt: "4 min de leitura",
     tags: ["craft", "product", "startups"],
     image: "/blog/why-i-build-for-small-businesses.png",
-    content: `There's a certain kind of problem I keep being drawn to.
-
-It's not the distributed systems problem, or the billion-user scale problem. It's the "we're doing this in a spreadsheet and it's killing us" problem.
-
-The cookie shop that loses 30% of orders because WhatsApp messages fall through the cracks. The accounting firm that spends two hours per client manually verifying crypto wallets. The vet clinic that has no web presence at all, so people don't know they're open at 3am.
-
-These aren't glamorous problems. They don't make it onto Hacker News. But they're real, the feedback loop from "I built this" to "this saved me hours today" is measured in days, not quarters — and there's something deeply satisfying about that.
-
-## The long tail is underserved
-
-Most software is built either for consumers at massive scale or for enterprises with procurement processes. The small business in the middle — the one with 3 to 30 people, real revenue, and zero engineering capacity — gets the leftovers.
-
-They get SaaS tools that are 80% of what they need with 20% that's wrong for them. They get no-code tools that break the moment their workflow is slightly non-standard. They get agencies that build something, disappear, and leave them with code nobody can touch.
-
-What they rarely get is a developer who actually understands their operation and builds something that fits it exactly.
-
-## Fast feedback changes how you build
-
-When your client is a small business owner who uses what you build every day, the feedback is immediate and unambiguous. There's no product manager between you and the person with the problem. No sprint planning. No OKR alignment.
-
-You ship something on Tuesday. By Thursday you know if it worked.
-
-That compression of feedback changes how you make decisions. You stop optimizing for elegance and start optimizing for usefulness. You ask "does this save them time today?" before you ask anything else.
-
-## It compounds
-
-The other thing about building for small businesses: every project teaches you something transferable.
-
-The ordering system I built for a cookie shop taught me more about checkout UX than any case study. The crypto wallet verifier taught me on-chain proof patterns I now use in fintech work. The vet clinic site forced me to think seriously about local SEO and trust signals.
-
-None of it is glamorous. All of it compounds.
-
-That's why I keep coming back to it.`,
+  },
+  {
+    slug: "build-in-public-1",
+    title: "Build in Public #1: Tech Stack Decisions for a Fintech Startup",
+    titlePt: "Build in Public #1: Decisões de Stack para uma Startup Fintech",
+    summary:
+      "Honest analysis of each choice, performance benchmarks, financial context, detailed tradeoffs, and migration strategies for a fintech MVP.",
+    summaryPt:
+      "Análise honesta de cada escolha, benchmarks de performance, contexto financeiro, tradeoffs detalhados e estratégias de migração para um MVP fintech.",
+    date: "2025-09-01",
+    readingTime: "12 min read",
+    readingTimePt: "12 min de leitura",
+    tags: ["build in public", "fintech", "architecture"],
+    image: "/blog/nami.jpg",
+  },
+  {
+    slug: "heap-vs-stack",
+    title: "Heap vs Stack",
+    titlePt: "Heap vs Stack",
+    summary:
+      "What the heap and the stack are, how they differ, and how C, Java and Rust deal with memory management.",
+    summaryPt:
+      "O que são heap e stack, como diferem, e como C, Java e Rust lidam com o gerenciamento de memória.",
+    date: "2025-08-05",
+    readingTime: "4 min read",
+    readingTimePt: "4 min de leitura",
+    tags: ["fundamentals", "memory"],
+  },
+  {
+    slug: "who-am-i",
+    title: "Who am I",
+    titlePt: "Quem sou eu",
+    summary:
+      "A quick introduction: who I am, what drives me, and what you're going to find here.",
+    summaryPt:
+      "Uma introdução rápida: quem sou, o que me motiva e o que você vai encontrar por aqui.",
+    date: "2025-07-27",
+    readingTime: "2 min read",
+    readingTimePt: "2 min de leitura",
+    tags: ["personal"],
   },
 ];
