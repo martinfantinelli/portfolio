@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+import Markdown, { type Components } from "react-markdown";
 import AnimatedLink from "@/components/AnimatedLink";
 import { posts } from "@/data/posts";
 
@@ -28,36 +31,32 @@ function formatDate(iso: string) {
     year: "numeric",
     month: "long",
     day: "numeric",
+    timeZone: "UTC",
   });
 }
 
-// Minimal content renderer — splits on ## headings and blank lines.
-// Replace with a proper MDX/markdown renderer when you wire up real posts.
-function PostContent({ content }: { content: string }) {
-  const blocks = content.trim().split(/\n\n+/);
-
-  return (
-    <div className="mt-10 flex flex-col gap-5">
-      {blocks.map((block, i) => {
-        if (block.startsWith("## ")) {
-          return (
-            <h2
-              key={i}
-              className="mt-4 text-lg font-bold tracking-[-0.01em] text-foreground"
-            >
-              {block.replace(/^## /, "")}
-            </h2>
-          );
-        }
-        return (
-          <p key={i} className="text-sm leading-[1.8] text-secondary">
-            {block}
-          </p>
-        );
-      })}
-    </div>
-  );
-}
+// Styled markdown elements — no typography plugin, just the site tokens.
+const md: Components = {
+  h1: (p) => <h2 className="mt-6 text-xl font-bold tracking-[-0.01em] text-foreground" {...p} />,
+  h2: (p) => <h2 className="mt-6 text-lg font-bold tracking-[-0.01em] text-foreground" {...p} />,
+  h3: (p) => <h3 className="mt-4 text-base font-semibold text-foreground" {...p} />,
+  p: (p) => <p className="text-sm leading-[1.8] text-secondary" {...p} />,
+  a: (p) => <a className="text-primary underline-offset-4 hover:underline" target="_blank" rel="noreferrer" {...p} />,
+  strong: (p) => <strong className="font-semibold text-foreground" {...p} />,
+  ul: (p) => <ul className="flex list-disc flex-col gap-1.5 pl-5 text-sm leading-[1.7] text-secondary marker:text-hairline" {...p} />,
+  ol: (p) => <ol className="flex list-decimal flex-col gap-1.5 pl-5 text-sm leading-[1.7] text-secondary" {...p} />,
+  blockquote: (p) => <blockquote className="border-l-2 border-primary pl-4 [&_p]:italic" {...p} />,
+  hr: () => <hr className="border-hairline" />,
+  code: (p) => <code className="rounded-sm bg-card px-1 py-0.5 font-mono text-[0.85em] text-foreground" {...p} />,
+  pre: (p) => (
+    <pre
+      className="overflow-x-auto rounded-sm border border-card-border bg-card p-4 font-mono text-xs leading-relaxed [&_code]:bg-transparent [&_code]:p-0"
+      {...p}
+    />
+  ),
+  // eslint-disable-next-line @next/next/no-img-element -- markdown images have no known size
+  img: ({ alt, src }) => <img src={src as string} alt={alt ?? ""} loading="lazy" className="w-full rounded-sm border border-card-border" />,
+};
 
 export default async function PostPage({
   params,
@@ -124,7 +123,11 @@ export default async function PostPage({
       <div className="mt-8 border-t border-hairline" />
 
       {/* Content */}
-      <PostContent content={post.content} />
+      <div className="mt-10 flex flex-col gap-5">
+        <Markdown components={md}>
+          {await readFile(path.join(process.cwd(), "content/blog", `${slug}.md`), "utf8")}
+        </Markdown>
+      </div>
 
       {/* Footer */}
       <footer className="mt-16 border-t border-hairline pt-6">
