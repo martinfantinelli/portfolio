@@ -13,6 +13,20 @@ export type Post = {
 
 export const posts: Post[] = [
   {
+    slug: "pivoting-feixe",
+    title: "Pivoting Feixe: from Instagram leads to any open model",
+    titlePt: "A pivotagem do Feixe: de leads do Instagram a qualquer modelo aberto",
+    summary:
+      "Feixe used to rank Instagram leads on top of the Meta API. Now it lets anyone chat with any open model on Hugging Face, paying in reais. Why I pivoted and what I like about the new model.",
+    summaryPt:
+      "O Feixe ranqueava leads do Instagram em cima da API da Meta. Agora deixa qualquer pessoa conversar com qualquer modelo aberto do Hugging Face, pagando em real. Por que pivotei e o que gosto no modelo novo.",
+    date: "2026-10-25",
+    readingTime: "5 min read",
+    readingTimePt: "5 min de leitura",
+    tags: ["build in public", "startups", "ai"],
+    image: "/blog/jojo-1.jpg",
+  },
+  {
     slug: "why-i-build-for-small-businesses",
     title: "Why I build for small businesses",
     titlePt: "Por que eu construo para pequenos negócios",

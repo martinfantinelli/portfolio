@@ -17,10 +17,10 @@ export const projects: Project[] = [
   {
     slug: "feixe",
     name: "Feixe",
-    category: "SaaS · Lead intelligence",
+    category: "SaaS · AI models",
     description:
-      "Reads every Instagram comment, DM and story reply, identifies who is close to buying, and returns a priority queue so teams respond to the right people first — before the 24-hour API window closes.",
-    tech: ["Next.js", "TypeScript", "Meta API", "OpenAI"],
+      "Chat with any open model on Hugging Face, from trending releases to community fine-tunes, paying in reais per message. Also ships an Anthropic-compatible API and a CLI to run Claude Code on open models.",
+    tech: ["Next.js", "TypeScript", "Hugging Face", "Drizzle"],
     year: "2026",
     image: "/projects/feixe.png",
     live: "https://feixeapp.com",
