@@ -21,10 +21,10 @@ export const posts: Post[] = [
     summaryPt:
       "O Feixe ranqueava leads do Instagram em cima da API da Meta. Agora deixa qualquer pessoa conversar com qualquer modelo aberto do Hugging Face, pagando em real. Por que pivotei e o que gosto no modelo novo.",
     date: "2026-10-25",
-    readingTime: "5 min read",
-    readingTimePt: "5 min de leitura",
+    readingTime: "7 min read",
+    readingTimePt: "7 min de leitura",
     tags: ["build in public", "startups", "ai"],
-    image: "/blog/jojo-1.jpg",
+    image: "/blog/jojo-3.jpg",
   },
   {
     slug: "why-i-build-for-small-businesses",

@@ -4,7 +4,7 @@ Hoje o Feixe é outra coisa: um lugar para conversar com qualquer modelo aberto 
 
 Mesmo nome, mesmo domínio, produto completamente diferente. Este post é sobre por que eu pivotei e o que eu mais gosto no modelo novo.
 
-![Painel de JoJo: o momento antes da decisão](/blog/jojo-1.jpg)
+![Star Platinum, pronto para o primeiro soco](/blog/jojo-1.jpg)
 
 ---
 
@@ -34,7 +34,7 @@ feixe /model <org/modelo>
 
 **Teste grátis, sem cartão.** Entre com Google, GitHub ou X e mande as primeiras mensagens.
 
-![Painel de JoJo: "Yes, yes, yes"](/blog/jojo-2.jpg)
+![Avdol, Kakyoin, Jotaro e Joseph: "Let's hit the road!"](/blog/jojo-2.jpg)
 
 ---
 
@@ -60,7 +60,7 @@ Quem só quer uma IA que não recusa tudo usa o chat. Um dev usa a API ou roda o
 
 O pitch antigo precisava de um parágrafo. O novo cabe numa linha: *escolha qualquer modelo aberto e converse com ele agora*. Pitch menor, onboarding menor, menos coisa para quebrar.
 
-![Painel de JoJo: "To be continued"](/blog/jojo-3.jpg)
+![Jolyne e Jotaro: mesma linhagem, história nova](/blog/jojo-3.jpg)
 
 ---
 
@@ -69,6 +69,18 @@ O pitch antigo precisava de um parágrafo. O novo cabe numa linha: *escolha qual
 - **Precificar modelos sob demanda.** O router publica preço dos modelos do catálogo, mas não de todo fine-tune da comunidade. Para esses uso uma tarifa fixa conservadora e calibro com o custo real.
 - **Nem todo modelo funciona.** Alguns repositórios simplesmente não podem ser servidos. Quando acontece, o chat avisa e sugere escolher outro, em vez de soltar um erro críptico.
 - **Confiança.** "Sem censura" chama atenção, e também traz responsabilidade. Os termos deixam claro que o usuário responde pelo que faz com as respostas.
+
+## Referência: curiosidades sobre fine-tuning
+
+Metade do que torna o catálogo do Hugging Face interessante é o fine-tuning: pegar um modelo aberto que já existe e treinar mais um pouco para um objetivo específico. Algumas coisas sobre isso que eu acho fascinantes:
+
+- **Você quase não mexe no modelo.** O LoRA congela os pesos originais e treina matrizes pequenas ao lado. No GPT-3 175B, o paper reporta até 10.000x menos parâmetros treináveis, com qualidade equivalente ao fine-tuning completo. É por isso que o Hub tem tantos fine-tunes: treinar um ficou barato. ([Hu et al., 2021](https://arxiv.org/abs/2106.09685))
+- **Um modelo de 65B numa GPU só.** O QLoRA junta LoRA com quantização em 4 bits e fez fine-tuning de um modelo de 65B numa única GPU de 48 GB. Antes disso, precisava de um cluster. ([Dettmers et al., 2023](https://arxiv.org/abs/2305.14314))
+- **Um modelo de instruções por menos de US$600.** O Alpaca, de Stanford, pegou um modelo base e 52 mil exemplos de instrução gerados por outro modelo, e acabou se comportando surpreendentemente perto dos grandes modelos de chat da época. ([Stanford CRFM, 2023](https://crfm.stanford.edu/2023/03/13/alpaca.html))
+- **"Sem censura" muitas vezes é cirurgia, não treino.** Pesquisadores descobriram que, em muitos modelos de chat, as recusas passam por uma única direção nas ativações do modelo. Remova essa direção e o modelo praticamente para de recusar. A comunidade chama isso de "abliteration", e está por trás de muitos modelos sem censura do Hub. ([Arditi et al., 2024](https://arxiv.org/abs/2406.11717))
+- **Dá para fundir modelos sem treinar.** Ferramentas como o mergekit combinam os pesos de vários fine-tunes num modelo novo, sem nenhum treino em GPU. Alguns dos melhores modelos da comunidade são merges de merges. ([mergekit](https://github.com/arcee-ai/mergekit))
+
+Para ir mais fundo, a [documentação do PEFT](https://huggingface.co/docs/peft) do Hugging Face é o ponto de partida prático.
 
 ## Pivotar não é fracassar
 
