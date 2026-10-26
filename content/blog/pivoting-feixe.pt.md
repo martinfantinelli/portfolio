@@ -67,7 +67,7 @@ O pitch antigo precisava de um parágrafo. O novo cabe numa linha: *escolha qual
 ## O que é difícil
 
 - **Precificar modelos sob demanda.** O router publica preço dos modelos do catálogo, mas não de todo fine-tune da comunidade. Para esses uso uma tarifa fixa conservadora e calibro com o custo real.
-- **Nem todo modelo funciona.** Alguns repositórios simplesmente não podem ser servidos. Quando acontece, o chat avisa e sugere escolher outro, em vez de soltar um erro críptico.
+- **Nem todo modelo funciona.** Alguns repositórios simplesmente não podem ser servidos. Quando acontece, o chat avisa e sugere escolher outro, em vez de soltar um erro crítico.
 - **Confiança.** "Sem censura" chama atenção, e também traz responsabilidade. Os termos deixam claro que o usuário responde pelo que faz com as respostas.
 
 ## Referência: curiosidades sobre fine-tuning
